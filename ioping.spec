@@ -4,7 +4,7 @@
 #
 Name     : ioping
 Version  : 1.1
-Release  : 7
+Release  : 8
 URL      : https://github.com/koct9i/ioping/archive/v1.1.tar.gz
 Source0  : https://github.com/koct9i/ioping/archive/v1.1.tar.gz
 Summary  : No detailed summary available
@@ -22,7 +22,6 @@ similar to how ping(1) does for network latency.
 Summary: bin components for the ioping package.
 Group: Binaries
 Requires: ioping-license = %{version}-%{release}
-Requires: ioping-man = %{version}-%{release}
 
 %description bin
 bin components for the ioping package.
@@ -46,20 +45,30 @@ man components for the ioping package.
 
 %prep
 %setup -q -n ioping-1.1
+cd %{_builddir}/ioping-1.1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1542319248
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1604097833
+export GCC_IGNORE_WERROR=1
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 make  %{?_smp_mflags}
 
+
 %install
-export SOURCE_DATE_EPOCH=1542319248
+export SOURCE_DATE_EPOCH=1604097833
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/ioping
-cp LICENSE %{buildroot}/usr/share/package-licenses/ioping/LICENSE
+cp %{_builddir}/ioping-1.1/LICENSE %{buildroot}/usr/share/package-licenses/ioping/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 %make_install PREFIX=/usr
 
 %files
@@ -71,7 +80,7 @@ cp LICENSE %{buildroot}/usr/share/package-licenses/ioping/LICENSE
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/ioping/LICENSE
+/usr/share/package-licenses/ioping/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 
 %files man
 %defattr(0644,root,root,0755)
